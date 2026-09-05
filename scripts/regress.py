@@ -54,6 +54,9 @@ def main():
     command([sys.executable,'scripts/build_firmware.py'],'build/firmware_build.txt')
     simulate('accelerator_tb',['tb/soc/accelerator_tb.sv'])
     simulate('uart_tb',['tb/soc/uart_tb.sv'])
+    simulate('bus_tb',['tb/soc/bus_tb.sv'])
+    board=[str(p.relative_to(ROOT)) for p in sorted((ROOT/'rtl'/'board').glob('*.sv'))]
+    simulate('board_tb',[*board,'tb/soc/uart_monitor.sv','tb/soc/board_tb.sv'])
     results={}
     for name,stall,cpu_only in [('soc',0,0),('soc_stalls',1,0),('cpu_only',0,1)]:
         log=f'build/{name}_uart.txt'
@@ -65,6 +68,7 @@ def main():
                  [f'+UART_LOG={log}'],name=name)
         results[name]=verify_uart(log,bool(cpu_only))
     (ROOT/'build'/'benchmarks.json').write_text(json.dumps(results,indent=2)+'\n')
-    print('PASS: full simulation regression')
+    command([sys.executable,'scripts/check_rtl.py'],'build/rtl_checks.txt')
+    print('PASS: full regression including CPU firmware, UART, lint and portable synthesis')
 
 if __name__=='__main__': main()

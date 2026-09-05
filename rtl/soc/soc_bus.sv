@@ -10,7 +10,7 @@ module soc_bus #(
     input wire dv, output wire dr, input wire dw,
     input wire [31:0] da, input wire [31:0] wd, input wire [3:0] ws,
     output reg dp, output wire [31:0] rd,
-    output wire uart, output reg [1:0] demo_status
+    output wire uart, output reg [1:0] demo_status, output wire acc_busy
 );
     (* ram_style = "block" *) reg [31:0] rom [0:4095];
     (* ram_style = "block" *) reg [31:0] ram [0:4095];
@@ -30,7 +30,7 @@ module soc_bus #(
     wire full_write = daccept && dw && da[1:0] == 0 && ws == 4'hf;
     wire [31:0] aligned_da = {da[31:2],2'b00};
     wire [31:0] acc_read;
-    wire acc_busy, acc_done;
+    wire acc_done;
     wire signed [31:0] acc_result;
     wire [31:0] acc_cycles;
     wire uart_busy;

@@ -2,9 +2,9 @@
 module bus_tb;
     reg clk=0,rst=1,iv=0,dv=0,dw=0;
     reg[31:0]ia=0,da=0,wd=0;reg[3:0]ws=0;
-    wire ir,ip,dr,dp,uart;wire[31:0]idata,rd;wire[1:0]status;
+    wire ir,ip,dr,dp,uart,acc_busy;wire[31:0]idata,rd;wire[1:0]status;
     integer accepts=0,starts=0,checks=0,i,old_accepts;reg[31:0]value,t0,t1;
-    soc_bus #(.STALL_REQUESTS(1)) dut(clk,rst,iv,ir,ia,ip,idata,dv,dr,dw,da,wd,ws,dp,rd,uart,status);
+    soc_bus #(.STALL_REQUESTS(1)) dut(clk,rst,iv,ir,ia,ip,idata,dv,dr,dw,da,wd,ws,dp,rd,uart,status,acc_busy);
     always #5 clk=~clk;
     always @(posedge clk)if(!rst)begin
         if(dv&&dr)accepts=accepts+1;

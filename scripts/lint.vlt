@@ -1,0 +1,11 @@
+`verilator_config
+// Only unused decode fields / unexposed debug wires / ignored upper input bytes.
+// No width, latch, clock, combinational-loop or missing-pin warnings are disabled.
+lint_off -rule UNUSED -file "*rtl/cpu_core.v" -match "*decoded_fence*"
+lint_off -rule UNUSED -file "*rtl/immediate_generator.v" -match "*instruction*"
+lint_off -rule UNUSED -file "*rtl/soc/ai_soc.sv" -match "*trap_cause*"
+lint_off -rule UNUSED -file "*rtl/soc/ai_soc.sv" -match "*trap_pc*"
+lint_off -rule UNUSED -file "*rtl/soc/soc_bus.sv" -match "*acc_done*"
+lint_off -rule UNUSED -file "*rtl/soc/soc_bus.sv" -match "*acc_result*"
+lint_off -rule UNUSED -file "*rtl/soc/soc_bus.sv" -match "*acc_cycles*"
+lint_off -rule UNUSED -file "*rtl/soc/int8_accelerator.sv" -match "*write_data*"
