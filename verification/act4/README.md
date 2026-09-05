@@ -1,17 +1,7 @@
-# Official architectural-test integration
+# RISC-V architectural tests
 
-This directory targets the authoritative RISC-V Architectural Certification
-Tests (ACT4), pinned in `PINNED_REVISION`. RISCOF is intentionally not used
-because upstream now marks it deprecated in favor of ACT4.
+This folder contains the ACT4 configuration carried over from my CPU project. It targets the unprivileged RV32I instruction set, with the upstream revision recorded in `PINNED_REVISION`.
 
-The configuration limits generation to the unprivileged `I` extension and
-excludes privileged tests. The DUT halt macro writes `1` (pass) or `2` (fail)
-to the simulation-only address `0x0000fff0`. This configuration must pass ACT4
-schema validation before its results can be treated as architectural-test
-evidence.
+Architectural certification tests have not been run for this SoC. The current verification results come from the CPU regression, accelerator tests, and CPU-driven firmware simulations described in the [verification summary](../../docs/VERIFICATION.md).
 
-Required tools are GNU Make, Git, Python 3.10+, the ACT4 Python/Ruby/UDB
-dependencies, `riscv64-unknown-elf-gcc`, `riscv64-unknown-elf-objdump`, and
-`sail_riscv_sim` 0.13.1. Run `make isa-test` from WSL/Linux after installing
-them. Until the generated self-checking ELFs run on the DUT and all report
-pass, the project status remains **official architectural tests: NOT RUN**.
+The inherited ACT4 setup uses a simulation-only status address of `0x0000fff0` for its pass/fail marker. It still needs a DUT execution adapter and validation against the current SoC memory map before it can contribute certification results.
