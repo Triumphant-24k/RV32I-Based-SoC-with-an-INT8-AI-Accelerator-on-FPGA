@@ -39,8 +39,8 @@ module soc_bus #(
     assign instruction_data = instruction_in_range ? instruction_q : 32'hffffffff;
     assign rd = read_select == 0 ? rom_q : read_select == 1 ? ram_q : io_q;
     initial begin
-        if (ROM_HEX != "") $readmemh(ROM_HEX,rom);
-        if (RAM_HEX != "") $readmemh(RAM_HEX,ram);
+        if (ROM_HEX != '0) $readmemh(ROM_HEX,rom);
+        if (RAM_HEX != '0) $readmemh(RAM_HEX,ram);
     end
     // Deliberately no reset on the arrays or RAM/ROM data output registers.
     // Both ROM ports and the RAM read port are synchronous.

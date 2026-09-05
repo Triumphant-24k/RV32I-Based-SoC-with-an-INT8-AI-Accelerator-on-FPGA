@@ -1,12 +1,12 @@
 `timescale 1ns/1ps
 module soc_tb;
     parameter integer STALL_REQUESTS=0, CPU_ONLY=0;
+    parameter ROM_HEX="firmware/hex/demo_rom.hex", RAM_HEX="firmware/hex/demo_ram.hex";
     reg clk=0,rst=1;wire uart;wire[2:0]led;
     wire byte_valid;wire[7:0]byte_data;
     integer fd,clocks=0,starts=0,pass_writes=0;
     string filename;
-    ai_soc #(.ROM_HEX(CPU_ONLY?"firmware/hex/cpu_rom.hex":"firmware/hex/demo_rom.hex"),
-        .RAM_HEX(CPU_ONLY?"firmware/hex/cpu_ram.hex":"firmware/hex/demo_ram.hex"),
+    ai_soc #(.ROM_HEX(ROM_HEX),.RAM_HEX(RAM_HEX),
         .STALL_REQUESTS(STALL_REQUESTS)) dut(clk,rst,uart,led);
     uart_monitor monitor(clk,rst,uart,byte_valid,byte_data);
     always #5 clk=~clk;
