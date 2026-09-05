@@ -1,0 +1,3 @@
+280 static instructions, RV32I opcode audit PASS; mnemonics: add, addi, andi, auipc, beq, bgeu, bltu, bne, jal, jalr, lb, lbu, lui, lw, sb, slli, srai, srl, srli, sub, sw, xor
+   text	   data	    bss	    dec	    hex	filename
+   1756	      4	     20	   1780	    6f4	/mnt/c/Users/Trium/OneDrive/Desktop/IMP/RV32I-Based SoC with an INT8 AI Accelerator on FPGA/build/firmware/cpu.elf

@@ -1,0 +1,536 @@
+{
+  "soc": {
+    "counter_read_delta": 5,
+    "cases": [
+      {
+        "id": 0,
+        "name": "zeros",
+        "result": 0,
+        "cpu": 1870,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 233.75,
+        "e2e_speedup": 4.857142857142857
+      },
+      {
+        "id": 1,
+        "name": "positive",
+        "result": 120,
+        "cpu": 1909,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 238.625,
+        "e2e_speedup": 4.958441558441558
+      },
+      {
+        "id": 2,
+        "name": "negative",
+        "result": -204,
+        "cpu": 1933,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 241.625,
+        "e2e_speedup": 5.020779220779221
+      },
+      {
+        "id": 3,
+        "name": "cancel",
+        "result": 0,
+        "cpu": 2050,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 256.25,
+        "e2e_speedup": 5.324675324675325
+      },
+      {
+        "id": 4,
+        "name": "max_positive",
+        "result": 131072,
+        "cpu": 1894,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 236.75,
+        "e2e_speedup": 4.919480519480519
+      },
+      {
+        "id": 5,
+        "name": "max_negative",
+        "result": -130048,
+        "cpu": 2062,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 257.75,
+        "e2e_speedup": 5.355844155844156
+      },
+      {
+        "id": 6,
+        "name": "positive_extreme",
+        "result": 129032,
+        "cpu": 2038,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 254.75,
+        "e2e_speedup": 5.293506493506493
+      },
+      {
+        "id": 7,
+        "name": "last_only",
+        "result": -16256,
+        "cpu": 1894,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 236.75,
+        "e2e_speedup": 4.919480519480519
+      },
+      {
+        "id": 8,
+        "name": "mixed",
+        "result": -34181,
+        "cpu": 1954,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 244.25,
+        "e2e_speedup": 5.0753246753246755
+      },
+      {
+        "id": 9,
+        "name": "both_negative",
+        "result": 168,
+        "cpu": 1942,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 242.75,
+        "e2e_speedup": 5.044155844155844
+      },
+      {
+        "id": 10,
+        "name": "random_000",
+        "result": -27959,
+        "cpu": 1954,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 244.25,
+        "e2e_speedup": 5.0753246753246755
+      },
+      {
+        "id": 11,
+        "name": "random_001",
+        "result": 26325,
+        "cpu": 1954,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 244.25,
+        "e2e_speedup": 5.0753246753246755
+      },
+      {
+        "id": 12,
+        "name": "random_002",
+        "result": -12173,
+        "cpu": 1969,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 246.125,
+        "e2e_speedup": 5.114285714285714
+      },
+      {
+        "id": 13,
+        "name": "random_003",
+        "result": -4138,
+        "cpu": 1966,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 245.75,
+        "e2e_speedup": 5.106493506493506
+      },
+      {
+        "id": 14,
+        "name": "random_004",
+        "result": -8899,
+        "cpu": 1978,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 247.25,
+        "e2e_speedup": 5.137662337662338
+      },
+      {
+        "id": 15,
+        "name": "random_005",
+        "result": -5166,
+        "cpu": 1960,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 245.0,
+        "e2e_speedup": 5.090909090909091
+      },
+      {
+        "id": 16,
+        "name": "random_006",
+        "result": 5578,
+        "cpu": 1990,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 248.75,
+        "e2e_speedup": 5.1688311688311686
+      },
+      {
+        "id": 17,
+        "name": "random_007",
+        "result": 10051,
+        "cpu": 1957,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 244.625,
+        "e2e_speedup": 5.083116883116883
+      },
+      {
+        "id": 18,
+        "name": "random_008",
+        "result": 16943,
+        "cpu": 1981,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 247.625,
+        "e2e_speedup": 5.1454545454545455
+      },
+      {
+        "id": 19,
+        "name": "random_009",
+        "result": -2866,
+        "cpu": 1960,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 245.0,
+        "e2e_speedup": 5.090909090909091
+      },
+      {
+        "id": 20,
+        "name": "random_010",
+        "result": 2593,
+        "cpu": 1945,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 243.125,
+        "e2e_speedup": 5.0519480519480515
+      },
+      {
+        "id": 21,
+        "name": "random_011",
+        "result": 5051,
+        "cpu": 1969,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 246.125,
+        "e2e_speedup": 5.114285714285714
+      },
+      {
+        "id": 22,
+        "name": "random_012",
+        "result": -9127,
+        "cpu": 1969,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 246.125,
+        "e2e_speedup": 5.114285714285714
+      },
+      {
+        "id": 23,
+        "name": "random_013",
+        "result": 12751,
+        "cpu": 1963,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 245.375,
+        "e2e_speedup": 5.0987012987012985
+      },
+      {
+        "id": 24,
+        "name": "random_014",
+        "result": -24613,
+        "cpu": 1960,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 245.0,
+        "e2e_speedup": 5.090909090909091
+      },
+      {
+        "id": 25,
+        "name": "random_015",
+        "result": 3182,
+        "cpu": 1951,
+        "compute": 8,
+        "e2e": 385,
+        "compute_speedup": 243.875,
+        "e2e_speedup": 5.067532467532468
+      }
+    ]
+  },
+  "soc_stalls": {
+    "counter_read_delta": 6,
+    "cases": [
+      {
+        "id": 0,
+        "name": "zeros",
+        "result": 0,
+        "cpu": 2530,
+        "compute": 8,
+        "e2e": 555,
+        "compute_speedup": 316.25,
+        "e2e_speedup": 4.558558558558558
+      },
+      {
+        "id": 1,
+        "name": "positive",
+        "result": 120,
+        "cpu": 2586,
+        "compute": 8,
+        "e2e": 513,
+        "compute_speedup": 323.25,
+        "e2e_speedup": 5.04093567251462
+      },
+      {
+        "id": 2,
+        "name": "negative",
+        "result": -204,
+        "cpu": 2614,
+        "compute": 8,
+        "e2e": 525,
+        "compute_speedup": 326.75,
+        "e2e_speedup": 4.979047619047619
+      },
+      {
+        "id": 3,
+        "name": "cancel",
+        "result": 0,
+        "cpu": 2770,
+        "compute": 8,
+        "e2e": 557,
+        "compute_speedup": 346.25,
+        "e2e_speedup": 4.973070017953321
+      },
+      {
+        "id": 4,
+        "name": "max_positive",
+        "result": 131072,
+        "cpu": 2523,
+        "compute": 8,
+        "e2e": 504,
+        "compute_speedup": 315.375,
+        "e2e_speedup": 5.005952380952381
+      },
+      {
+        "id": 5,
+        "name": "max_negative",
+        "result": -130048,
+        "cpu": 2764,
+        "compute": 8,
+        "e2e": 546,
+        "compute_speedup": 345.5,
+        "e2e_speedup": 5.062271062271062
+      },
+      {
+        "id": 6,
+        "name": "positive_extreme",
+        "result": 129032,
+        "cpu": 2683,
+        "compute": 8,
+        "e2e": 517,
+        "compute_speedup": 335.375,
+        "e2e_speedup": 5.189555125725338
+      },
+      {
+        "id": 7,
+        "name": "last_only",
+        "result": -16256,
+        "cpu": 2534,
+        "compute": 8,
+        "e2e": 548,
+        "compute_speedup": 316.75,
+        "e2e_speedup": 4.624087591240876
+      },
+      {
+        "id": 8,
+        "name": "mixed",
+        "result": -34181,
+        "cpu": 2697,
+        "compute": 8,
+        "e2e": 512,
+        "compute_speedup": 337.125,
+        "e2e_speedup": 5.267578125
+      },
+      {
+        "id": 9,
+        "name": "both_negative",
+        "result": 168,
+        "cpu": 2603,
+        "compute": 8,
+        "e2e": 519,
+        "compute_speedup": 325.375,
+        "e2e_speedup": 5.015414258188825
+      },
+      {
+        "id": 10,
+        "name": "random_000",
+        "result": -27959,
+        "cpu": 2613,
+        "compute": 8,
+        "e2e": 512,
+        "compute_speedup": 326.625,
+        "e2e_speedup": 5.103515625
+      },
+      {
+        "id": 11,
+        "name": "random_001",
+        "result": 26325,
+        "cpu": 2608,
+        "compute": 8,
+        "e2e": 504,
+        "compute_speedup": 326.0,
+        "e2e_speedup": 5.174603174603175
+      },
+      {
+        "id": 12,
+        "name": "random_002",
+        "result": -12173,
+        "cpu": 2720,
+        "compute": 8,
+        "e2e": 544,
+        "compute_speedup": 340.0,
+        "e2e_speedup": 5.0
+      },
+      {
+        "id": 13,
+        "name": "random_003",
+        "result": -4138,
+        "cpu": 2575,
+        "compute": 8,
+        "e2e": 503,
+        "compute_speedup": 321.875,
+        "e2e_speedup": 5.119284294234593
+      },
+      {
+        "id": 14,
+        "name": "random_004",
+        "result": -8899,
+        "cpu": 2632,
+        "compute": 8,
+        "e2e": 510,
+        "compute_speedup": 329.0,
+        "e2e_speedup": 5.1607843137254905
+      },
+      {
+        "id": 15,
+        "name": "random_005",
+        "result": -5166,
+        "cpu": 2604,
+        "compute": 8,
+        "e2e": 530,
+        "compute_speedup": 325.5,
+        "e2e_speedup": 4.913207547169812
+      },
+      {
+        "id": 16,
+        "name": "random_006",
+        "result": 5578,
+        "cpu": 2673,
+        "compute": 8,
+        "e2e": 539,
+        "compute_speedup": 334.125,
+        "e2e_speedup": 4.959183673469388
+      },
+      {
+        "id": 17,
+        "name": "random_007",
+        "result": 10051,
+        "cpu": 2620,
+        "compute": 8,
+        "e2e": 514,
+        "compute_speedup": 327.5,
+        "e2e_speedup": 5.097276264591439
+      },
+      {
+        "id": 18,
+        "name": "random_008",
+        "result": 16943,
+        "cpu": 2696,
+        "compute": 8,
+        "e2e": 529,
+        "compute_speedup": 337.0,
+        "e2e_speedup": 5.09640831758034
+      },
+      {
+        "id": 19,
+        "name": "random_009",
+        "result": -2866,
+        "cpu": 2633,
+        "compute": 8,
+        "e2e": 531,
+        "compute_speedup": 329.125,
+        "e2e_speedup": 4.958568738229755
+      },
+      {
+        "id": 20,
+        "name": "random_010",
+        "result": 2593,
+        "cpu": 2550,
+        "compute": 8,
+        "e2e": 539,
+        "compute_speedup": 318.75,
+        "e2e_speedup": 4.7309833024118735
+      },
+      {
+        "id": 21,
+        "name": "random_011",
+        "result": 5051,
+        "cpu": 2759,
+        "compute": 8,
+        "e2e": 497,
+        "compute_speedup": 344.875,
+        "e2e_speedup": 5.551307847082495
+      },
+      {
+        "id": 22,
+        "name": "random_012",
+        "result": -9127,
+        "cpu": 2554,
+        "compute": 8,
+        "e2e": 521,
+        "compute_speedup": 319.25,
+        "e2e_speedup": 4.902111324376199
+      },
+      {
+        "id": 23,
+        "name": "random_013",
+        "result": 12751,
+        "cpu": 2609,
+        "compute": 8,
+        "e2e": 531,
+        "compute_speedup": 326.125,
+        "e2e_speedup": 4.913370998116761
+      },
+      {
+        "id": 24,
+        "name": "random_014",
+        "result": -24613,
+        "cpu": 2641,
+        "compute": 8,
+        "e2e": 544,
+        "compute_speedup": 330.125,
+        "e2e_speedup": 4.854779411764706
+      },
+      {
+        "id": 25,
+        "name": "random_015",
+        "result": 3182,
+        "cpu": 2568,
+        "compute": 8,
+        "e2e": 516,
+        "compute_speedup": 321.0,
+        "e2e_speedup": 4.976744186046512
+      }
+    ]
+  },
+  "cpu_only": {
+    "counter_read_delta": 5,
+    "cases": []
+  }
+}

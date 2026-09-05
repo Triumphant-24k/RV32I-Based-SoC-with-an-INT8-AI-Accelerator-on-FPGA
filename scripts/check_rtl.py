@@ -17,6 +17,7 @@ def main():
     (ROOT/'build'/'synth.ys').write_text(script)
     command(['yosys','-Q','-T','-q','-l','build/synthesis_full.txt','-s','build/synth.ys'],'build/synthesis.txt')
     net=json.loads((ROOT/'build'/'synthesis.json').read_text())
+    assert set(net['modules']['fpga_top']['ports']) == {'clk','external_reset','uart_tx_pin','led'}, 'Unexpected physical interface'
     memories=[];multipliers=[]
     for name,mod in net['modules'].items():
         for cell_name,cell in mod.get('cells',{}).items():

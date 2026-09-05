@@ -50,6 +50,7 @@ def verify_uart(path, cpu_only=False):
 
 def main():
     (ROOT/'build').mkdir(exist_ok=True)
+    command([sys.executable,'scripts/check_reuse.py'],'build/reuse.txt')
     command([sys.executable,'scripts/baseline.py'],'build/baseline_regression.txt')
     command([sys.executable,'scripts/build_firmware.py'],'build/firmware_build.txt')
     simulate('accelerator_tb',['tb/soc/accelerator_tb.sv'])
@@ -69,6 +70,7 @@ def main():
         results[name]=verify_uart(log,bool(cpu_only))
     (ROOT/'build'/'benchmarks.json').write_text(json.dumps(results,indent=2)+'\n')
     command([sys.executable,'scripts/check_rtl.py'],'build/rtl_checks.txt')
+    command([sys.executable,'scripts/handoff.py'],'build/handoff.txt')
     print('PASS: full regression including CPU firmware, UART, lint and portable synthesis')
 
 if __name__=='__main__': main()

@@ -1,0 +1,26 @@
+{
+  "scope": "Portable Yosys process/memory synthesis, not placed/routed FPGA implementation",
+  "memories": [
+    {
+      "name": "ram",
+      "words": 4096,
+      "width": 32,
+      "clocked_read_ports": 1
+    },
+    {
+      "name": "rom",
+      "words": 4096,
+      "width": 32,
+      "clocked_read_ports": 2
+    }
+  ],
+  "multipliers": [
+    {
+      "A_WIDTH": 8,
+      "B_WIDTH": 8,
+      "Y_WIDTH": 16,
+      "A_SIGNED": 1,
+      "B_SIGNED": 1
+    }
+  ]
+}
