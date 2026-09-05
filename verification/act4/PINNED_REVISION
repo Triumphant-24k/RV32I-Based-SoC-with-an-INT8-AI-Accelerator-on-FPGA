@@ -1,0 +1,4 @@
+repository=https://github.com/riscv/riscv-arch-test.git
+commit=4281ead674c5e36fe5f6b73b4a5854b25037c3cf
+framework=ACT4
+sail_riscv_version=0.13.1

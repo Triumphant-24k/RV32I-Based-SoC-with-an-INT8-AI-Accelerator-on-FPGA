@@ -1,0 +1,7 @@
+read_verilog rtl/alu.v rtl/branch_unit.v rtl/control_unit.v rtl/cpu_core.v rtl/immediate_generator.v rtl/load_store_unit.v rtl/register_file.v
+hierarchy -top cpu_core
+proc
+memory
+opt
+flatten
+equiv_opt -assert -async2sync synth -top cpu_core -flatten

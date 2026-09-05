@@ -1,0 +1,22 @@
+# ACT4/UDB description for the unprivileged educational core.
+---
+$schema: config_schema.json#
+kind: architecture configuration
+type: fully configured
+name: educational-rv32i
+description: Stallable non-pipelined RV32I educational processor
+implemented_extensions:
+  - { name: I, version: "= 2.1" }
+params:
+  MXLEN: 32
+  PHYS_ADDR_WIDTH: 32
+  M_MODE_ENDIANNESS: little
+  PRECISE_SYNCHRONOUS_EXCEPTIONS: true
+  TRAP_ON_ECALL_FROM_M: true
+  TRAP_ON_EBREAK: true
+  TRAP_ON_UNIMPLEMENTED_INSTRUCTION: true
+  TRAP_ON_RESERVED_INSTRUCTION: true
+  MISALIGNED_LDST: false
+  MISALIGNED_LDST_EXCEPTION_PRIORITY: high
+  PMA_GRANULARITY: 2
+  NUM_PMP_ENTRIES: 0

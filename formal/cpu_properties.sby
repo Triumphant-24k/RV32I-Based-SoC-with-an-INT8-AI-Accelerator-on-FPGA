@@ -1,0 +1,20 @@
+[options]
+mode prove
+depth 20
+
+[engines]
+abc pdr
+
+[script]
+read -formal -D FORMAL alu.v branch_unit.v control_unit.v cpu_core.v immediate_generator.v load_store_unit.v register_file.v cpu_properties.sv
+prep -top cpu_properties
+
+[files]
+rtl/alu.v
+rtl/branch_unit.v
+rtl/control_unit.v
+rtl/cpu_core.v
+rtl/immediate_generator.v
+rtl/load_store_unit.v
+rtl/register_file.v
+formal/cpu_properties.sv
