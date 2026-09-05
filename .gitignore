@@ -1,0 +1,9 @@
+build/
+work/
+__pycache__/
+*.vcd
+*.wlf
+transcript
+.Xil/
+*.jou
+*.log
