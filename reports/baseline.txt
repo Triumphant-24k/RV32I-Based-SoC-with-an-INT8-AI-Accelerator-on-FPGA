@@ -1,0 +1,7 @@
+PASS: unit regression (46 checks)
+PASS: directed core regression (176 checks, 63 instructions)
+PASS: zero-wait memory mode (14 cycles, one store)
+PASS: fixed-delay memory mode (50 cycles, one store)
+PASS: random-delay/backpressure memory mode (54 cycles, one store)
+PASS: memory-wait regression (3 modes)
+PASS: generated differential regression (300 tests, seed 52a1c0de)
