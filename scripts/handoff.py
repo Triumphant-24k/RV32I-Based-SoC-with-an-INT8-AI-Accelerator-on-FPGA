@@ -9,13 +9,18 @@ ROOT=pathlib.Path(__file__).resolve().parents[1]
 def main():
     target=ROOT/'reports';target.mkdir(exist_ok=True)
     names=['reuse','baseline_regression','firmware_build','accelerator_tb','uart_tb',
-           'bus_tb','board_tb','soc','soc_stalls','cpu_only','rtl_checks']
+           'bus_tb','board_tb','soc','soc_stalls','cpu_only','rtl_checks','fpga_checks']
     summaries=[]
     for name in names:
         data=(ROOT/'build'/f'{name}.txt').read_text()
         assert 'PASS' in data and 'FATAL:' not in data, 'Incomplete evidence: '+name
         summaries.extend(line for line in data.splitlines() if line.startswith('PASS') or 'opcode audit PASS' in line)
     (target/'regression.txt').write_text('\n'.join(summaries)+'\n')
+    # Keep only small evidence files; board ELF/images and mapped netlists stay in build/.
+    for name in ['arty_benchmarks.json','arty_synthesis_summary.json','arty_mapping_summary.json']:
+        shutil.copyfile(ROOT/'build'/name,target/name)
+    board_lines=(ROOT/'build'/'arty_uart.txt').read_text().splitlines()
+    (target/'arty_uart_sample.txt').write_text('\n'.join(board_lines[:20])+'\n')
     for name in ['soc_uart.txt','soc_stalls_uart.txt','cpu_only_uart.txt','benchmarks.json','synthesis_summary.json']:
         shutil.copyfile(ROOT/'build'/name,target/name)
     for name in ['demo.audit.txt','cpu.audit.txt','demo.dis','cpu.dis','toolchain.txt']:

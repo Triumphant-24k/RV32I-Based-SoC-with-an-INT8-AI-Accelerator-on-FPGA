@@ -1,5 +1,8 @@
 # Verification summary — September 5, 2026
 
+This is the original implementation snapshot. The September 6 baseline rerun and
+Arty readiness results are recorded in [FPGA_READINESS.md](FPGA_READINESS.md).
+
 ## Baseline findings
 
 The 30 imported files match source commit

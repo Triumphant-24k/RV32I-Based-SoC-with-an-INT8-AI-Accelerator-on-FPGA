@@ -70,6 +70,7 @@ def main():
         results[name]=verify_uart(log,bool(cpu_only))
     (ROOT/'build'/'benchmarks.json').write_text(json.dumps(results,indent=2)+'\n')
     command([sys.executable,'scripts/check_rtl.py'],'build/rtl_checks.txt')
+    command([sys.executable,'scripts/check_fpga.py'],'build/fpga_checks.txt',timeout=300)
     command([sys.executable,'scripts/handoff.py'],'build/handoff.txt')
     print('PASS: full regression including CPU firmware, UART, lint and portable synthesis')
 

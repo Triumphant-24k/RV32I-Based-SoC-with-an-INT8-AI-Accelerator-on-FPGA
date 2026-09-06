@@ -1,0 +1,187 @@
+{
+  "arty": [
+    {
+      "id": 0,
+      "result": 0,
+      "cpu": 1870,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 1,
+      "result": 120,
+      "cpu": 1909,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 2,
+      "result": -204,
+      "cpu": 1933,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 3,
+      "result": 0,
+      "cpu": 2050,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 4,
+      "result": 131072,
+      "cpu": 1894,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 5,
+      "result": -130048,
+      "cpu": 2062,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 6,
+      "result": 129032,
+      "cpu": 2038,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 7,
+      "result": -16256,
+      "cpu": 1894,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 8,
+      "result": -34181,
+      "cpu": 1954,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 9,
+      "result": 168,
+      "cpu": 1942,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 10,
+      "result": -27959,
+      "cpu": 1954,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 11,
+      "result": 26325,
+      "cpu": 1954,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 12,
+      "result": -12173,
+      "cpu": 1969,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 13,
+      "result": -4138,
+      "cpu": 1966,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 14,
+      "result": -8899,
+      "cpu": 1978,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 15,
+      "result": -5166,
+      "cpu": 1960,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 16,
+      "result": 5578,
+      "cpu": 1990,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 17,
+      "result": 10051,
+      "cpu": 1957,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 18,
+      "result": 16943,
+      "cpu": 1981,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 19,
+      "result": -2866,
+      "cpu": 1960,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 20,
+      "result": 2593,
+      "cpu": 1945,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 21,
+      "result": 5051,
+      "cpu": 1969,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 22,
+      "result": -9127,
+      "cpu": 1969,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 23,
+      "result": 12751,
+      "cpu": 1963,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 24,
+      "result": -24613,
+      "cpu": 1960,
+      "compute": 8,
+      "e2e": 388
+    },
+    {
+      "id": 25,
+      "result": 3182,
+      "cpu": 1951,
+      "compute": 8,
+      "e2e": 388
+    }
+  ],
+  "arty_cpu": []
+}

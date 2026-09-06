@@ -9,6 +9,8 @@ PASS: generated differential regression (300 tests, seed 52a1c0de)
 PASS: generated 266 independent reference vectors, seed 20260907
 demo: 346 static instructions, RV32I opcode audit PASS; mnemonics: add, addi, andi, auipc, beq, bgeu, bltu, bne, jal, jalr, lb, lbu, lui, lw, sb, slli, srai, srl, srli, sub, sw, xor
 cpu: 280 static instructions, RV32I opcode audit PASS; mnemonics: add, addi, andi, auipc, beq, bgeu, bltu, bne, jal, jalr, lb, lbu, lui, lw, sb, slli, srai, srl, srli, sub, sw, xor
+board: 489 static instructions, RV32I opcode audit PASS; mnemonics: add, addi, andi, auipc, beq, bgeu, blt, bltu, bne, jal, jalr, lb, lbu, lui, lw, or, sb, sll, slli, srai, srl, srli, sub, sw, xor
+board_cpu: 334 static instructions, RV32I opcode audit PASS; mnemonics: add, addi, andi, auipc, beq, bgeu, blt, bltu, bne, jal, jalr, lb, lbu, lui, lw, or, sb, sll, slli, srai, srl, srli, sub, sw, xor
 PASS: accelerator 266 vectors, all reset ages, busy writes, MMIO, 12455 checks
 PASS: UART all 256 bytes, exact 8N1 timing, busy writes and reset
 PASS: bus isolation, synchronous ROM/RAM, strobes, holes, stalls, counter wrap, reset; 61 checks
@@ -17,3 +19,19 @@ PASS: real CPU firmware CPU_ONLY=0 STALL_REQUESTS=0 clocks=337242 starts=26 UART
 PASS: real CPU firmware CPU_ONLY=0 STALL_REQUESTS=1 clocks=386582 starts=26 UART=build/soc_stalls_uart.txt
 PASS: real CPU firmware CPU_ONLY=1 STALL_REQUESTS=0 clocks=216078 starts=0 UART=build/cpu_only_uart.txt
 PASS: fatal lint, synthesis check, two clocked 4096-word memories, one signed 8x8 multiplier
+PASS: 8 valid memory images; 6 malformed/empty-program fixtures rejected
+PASS: fatal lint, synthesis check, two clocked 4096-word memories, one signed 8x8 multiplier
+PASS: Yosys xc7 mapping; 24 RAMB18E1, 0 RAMB36E1, 0 DSP48E1; no unmapped cells/latches
+PASS: Tcl preflight demo=integrated part=xc7a100tcsg324-1; sources, constraints and selected images exist
+PASS: Tcl preflight demo=cpu part=xc7a100tcsg324-1; sources, constraints and selected images exist
+PASS: Tcl preflight demo=uart part=xc7a100tcsg324-1; sources, constraints and selected images exist
+PASS: Tcl preflight demo=led part=xc7a100tcsg324-1; sources, constraints and selected images exist
+PASS: 8 XDC pins match synthesized top ports/directions and recorded Digilent mapping; 10 ns clock
+PASS: real Tcl preflight for 4 modes; missing-Vivado error; 6 mocked build/bitstream-gate scenarios (not Vivado execution)
+PASS: UART all 256 bytes, exact 8N1 timing, busy writes and reset
+PASS: Arty standalone LED/reset/RX activity and 2 decoded Hello messages at 100 MHz/115200 baud
+PASS: Arty wrapper real CPU CPU_ONLY=0, 26 cases, 26 accepted starts, 1377752 clocks; POR, reset, heartbeat, LEDs
+PASS: build/arty_uart.txt, 26 decimal result/cycle reports and 52 calculated speedup values
+PASS: Arty wrapper real CPU CPU_ONLY=1, 26 cases, 0 accepted starts, 515942 clocks; POR, reset, heartbeat, LEDs
+PASS: build/arty_cpu_uart.txt, 26 decimal result/cycle reports
+PASS: FPGA readiness checks; Vivado implementation and physical validation NOT RUN

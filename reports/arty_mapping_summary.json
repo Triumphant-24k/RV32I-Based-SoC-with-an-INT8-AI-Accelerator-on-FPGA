@@ -1,0 +1,19 @@
+{
+  "scope": "Yosys 7-series synthesis mapping ONLY; not Vivado utilization or timing",
+  "primitive_counts": {
+    "FDCE": 1557,
+    "FDPE": 19,
+    "FDRE": 4,
+    "LUT1": 104,
+    "LUT2": 599,
+    "LUT3": 1506,
+    "LUT4": 174,
+    "LUT5": 423,
+    "LUT6": 2231,
+    "MUXCY": 456,
+    "MUXF7": 572,
+    "MUXF8": 106,
+    "RAMB18E1": 24,
+    "XORCY": 343
+  }
+}

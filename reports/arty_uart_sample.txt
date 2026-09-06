@@ -1,0 +1,20 @@
+RV32I SoC Booted
+COUNTER_READ_DELTA=00000005
+Test: 0
+CPU result: 0
+Accelerator result: 0
+CPU cycles: 1870
+Accelerator cycles: 8
+End-to-end cycles: 388
+Speedup: 4.81x
+Compute-only speedup: 233.75x
+TEST PASSED
+Test: 1
+CPU result: 120
+Accelerator result: 120
+CPU cycles: 1909
+Accelerator cycles: 8
+End-to-end cycles: 388
+Speedup: 4.92x
+Compute-only speedup: 238.62x
+TEST PASSED

@@ -18,6 +18,8 @@ python3 scripts/regress.py
 
 The regression rebuilds firmware and reference vectors, audits the generated instructions, checks CPU provenance, and runs the CPU, accelerator, bus, UART, and board-wrapper tests. It also runs Verilator lint and portable Yosys synthesis checks. A required check failing produces a nonzero exit status.
 
+The September 6 extension also checks the Arty wrapper, real UART divider, decimal board firmware, XDC ports, malformed images, Tcl preflight and build failure guards, and Yosys 7-series mapping. The Tcl tests use the already-installed Tcl 8.6 shared library through Python ctypes; they do not emulate or replace Vivado implementation.
+
 ## Tools
 
 Linux packages:
@@ -46,3 +48,5 @@ Temporary files go into ignored `build/`. Firmware memory images and selected lo
 `scripts/check_reuse.py` checks all 30 original contents, including those two preserved copies. The README edits do not change the CPU RTL, firmware support, or testbench provenance.
 
 Board-specific setup is covered separately in [BRINGUP.md](BRINGUP.md). Competition permission to reuse the CPU has not yet been confirmed.
+
+The primary Arty build commands and output locations are in [ARTY_BRINGUP.md](ARTY_BRINGUP.md). Board firmware is selected from the same C source with `BOARD_REPORT`; its images are generated under ignored `build/firmware/`. The original machine-readable regression images remain in `firmware/hex/`.

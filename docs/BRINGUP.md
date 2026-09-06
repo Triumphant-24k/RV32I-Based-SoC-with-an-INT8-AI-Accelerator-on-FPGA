@@ -1,5 +1,11 @@
 # FPGA allocation and bring-up checklist
 
+**September 6 update:** Arty A7-100T is now the primary target. Its verified pin mapping,
+build flow and demonstration sequence are in [ARTY_BRINGUP.md](ARTY_BRINGUP.md).
+The checklist below is the original board-neutral allocation guide; its statements
+about unselected targets describe the earlier preparation stage. The separate unknown
+Artix-7 backup remains unconfigured. Neither target has been physically validated.
+
 Status: simulation-tested engineering preparation only. Neither Arty A7-100T nor
 EDGE Zynq Z7010 is confirmed for this event. Do not reuse constraints from the old
 ASIC/OpenROAD project. No pin, clock, voltage, PS/PL UART route, or FPGA part has

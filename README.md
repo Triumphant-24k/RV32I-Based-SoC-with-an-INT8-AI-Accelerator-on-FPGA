@@ -2,7 +2,7 @@
 
 This project builds on my earlier RV32I processor by adding a small accelerator for signed INT8 dot products. I wanted to put the full path together: the CPU runs a program, passes data to the accelerator, reads the answer, and compares it with a software result.
 
-The project is being developed for the September 7–8, 2026 Design & Verification hackathon. The complete system has passed simulation with the actual CPU executing firmware. FPGA testing is the next stage, once the board is allocated.
+The project is being developed for the September 7–8, 2026 Design & Verification hackathon. The complete system has passed simulation with the actual CPU executing firmware. The primary hardware target is the Digilent Arty A7-100T. Physical FPGA testing is still pending.
 
 ## What it does
 
@@ -58,6 +58,14 @@ I reused the CPU datapath and control RTL, simulation memory and wrapper, existi
 
 The reused code retains its MIT licence and copyright notice. Original versions of the two updated test READMEs are preserved alongside the provenance records.
 
+## FPGA target
+
+The Arty A7-100T version uses the onboard 100 MHz clock, USB-UART at 115200 baud, and four LEDs for heartbeat, reset/UART activity, PASS, and FAIL. A separate board wrapper handles the pins and reset polarity, so the CPU and accelerator stay portable.
+
+The board firmware adds a boot message, decimal results, and speedup calculated from the measured cycle counts. Separate LED and UART smoke-test modes support the first stages of bring-up. An unidentified Artix-7 board is listed as a possible backup, with its pinout and device details still pending.
+
+The Vivado flow and official-source Arty constraints are prepared. Vivado implementation and a programmed-board demonstration have not yet been completed.
+
 ## Project documentation
 
 - [Architecture and block diagram](docs/ARCHITECTURE.md)
@@ -65,5 +73,6 @@ The reused code retains its MIT licence and copyright notice. Original versions 
 - [Verification results](docs/VERIFICATION.md)
 - [Development notes](docs/DEVELOPMENT.md)
 - [FPGA bring-up notes](docs/BRINGUP.md)
+- [Arty A7-100T build and demonstration](docs/ARTY_BRINGUP.md)
 
 MIT License · Copyright © 2026 Shiv Sriram

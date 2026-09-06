@@ -5,6 +5,7 @@ import re
 import struct
 import subprocess
 from reference import main as generate
+from validate_images import validate_image
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 PREFIX='riscv64-unknown-elf-'
 
@@ -27,9 +28,12 @@ def emit_images(elf, stem):
         assert paddr+filesz <= len(rom), f'ROM segment overflow: {paddr:x}'
         assert vaddr+memsz <= 0x4000 or (0x10000<=vaddr and vaddr+memsz<=0x13000)
         rom[paddr:paddr+filesz]=data[off:off+filesz]
-    dest=ROOT/'firmware'/'hex'; dest.mkdir(exist_ok=True)
+    dest=ROOT/'build'/'firmware' if stem.startswith('board') else ROOT/'firmware'/'hex'
+    dest.mkdir(exist_ok=True)
     for kind,blob in [('rom',rom),('ram',ram)]:
-        (dest/f'{stem}_{kind}.hex').write_text(''.join(f'{v[0]:08x}\n' for v in struct.iter_unpack('<I',blob)))
+        path=dest/f'{stem}_{kind}.hex'
+        path.write_text(''.join(f'{v[0]:08x}\n' for v in struct.iter_unpack('<I',blob)))
+        validate_image(path,program=(kind=='rom'))
 
 def audit(disassembly):
     allowed={0x03,0x23,0x13,0x33,0x37,0x17,0x63,0x67,0x6f,0x0f}
@@ -49,7 +53,8 @@ def audit(disassembly):
 def main():
     generate()
     out=ROOT/'build'/'firmware'; out.mkdir(parents=True,exist_ok=True)
-    for stem,defines in [('demo',[]),('cpu',['-DCPU_ONLY'])]:
+    for stem,defines in [('demo',[]),('cpu',['-DCPU_ONLY']),
+                         ('board',['-DBOARD_REPORT']),('board_cpu',['-DBOARD_REPORT','-DCPU_ONLY'])]:
         elf=out/f'{stem}.elf'
         flags=['-march=rv32i','-mabi=ilp32','-O2','-ffreestanding','-fno-builtin',
                '-fno-pic','-msmall-data-limit=0','-mno-relax','-fno-inline-functions',
