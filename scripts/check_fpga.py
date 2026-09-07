@@ -44,8 +44,8 @@ def board_uart(path,cpu_only=False):
     return rows
 
 def image_checks():
-    for stem in ['demo','cpu','board','board_cpu']:
-        folder=ROOT/'build'/'firmware' if stem.startswith('board') else ROOT/'firmware'/'hex'
+    for stem in ['demo','cpu','board','board_cpu','gui']:
+        folder=ROOT/'build'/'firmware' if (stem.startswith('board') or stem=='gui') else ROOT/'firmware'/'hex'
         for kind in ['rom','ram']:validate_image(folder/f'{stem}_{kind}.hex',program=(kind=='rom'))
     with tempfile.TemporaryDirectory(dir=ROOT/'build') as temp:
         p=pathlib.Path(temp)/'bad.hex'
@@ -55,7 +55,7 @@ def image_checks():
             try:validate_image(p,program=True)
             except ValueError:pass
             else:raise AssertionError('Accepted malformed/empty program')
-    print('PASS: 8 valid memory images; 6 malformed/empty-program fixtures rejected')
+    print('PASS: 10 valid memory images; 6 malformed/empty-program fixtures rejected')
 
 def tcl_eval(code):
     # Use the already-installed Tcl shared library; no machine installation needed.
@@ -81,7 +81,7 @@ def tcl_checks():
     # Start outside the repository, with spaces in the directory name, matching
     # a separate Vivado working directory rather than relying on the caller cwd.
     with tempfile.TemporaryDirectory(prefix='separate Vivado run ',dir=ROOT/'build') as temp:
-        for demo in ['integrated','cpu','uart','led']:
+        for demo in ['integrated','cpu','uart','led','gui']:
             rc,msg=tcl_eval(f'cd {{{temp}}};set argv {{--check-only --demo {demo}}}; {source}')
             assert rc==0,msg
     rc,msg=tcl_eval('set argv {}; '+source)
@@ -143,7 +143,7 @@ def tcl_checks():
         code+='set failed [catch {'+source+'} message];list $failed $wrote'
         rc,msg=tcl_eval(code)
         assert rc==0 and msg==('0 1' if scenario=='success' else '1 0'),(scenario,rc,msg)
-    print('PASS: real Tcl preflight for 4 modes from separate directory; staged images/source paths; missing-Vivado error; 6 mocked bitstream gates (not Vivado execution)')
+    print('PASS: real Tcl preflight for 5 modes from separate directory; staged images/source paths; missing-Vivado error; 6 mocked bitstream gates (not Vivado execution)')
 
 def programming_checks():
     source='source {'+str(ROOT/'scripts'/'program-arty.tcl')+'}'

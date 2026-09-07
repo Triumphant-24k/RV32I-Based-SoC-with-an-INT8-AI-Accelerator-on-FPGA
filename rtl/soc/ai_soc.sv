@@ -2,7 +2,7 @@
 module ai_soc #(
     parameter ROM_HEX="firmware/hex/demo_rom.hex", RAM_HEX="firmware/hex/demo_ram.hex",
     parameter integer CLOCK_HZ=1000000, BAUD=100000, STALL_REQUESTS=0
-)(input wire clk, input wire rst, output wire uart, output wire [2:0] led);
+)(input wire clk, input wire rst, output wire uart, output wire [2:0] led, input wire uart_rx_pin);
     wire iv,ir,ip,dv,dr,dw,dp;
     wire [31:0] ia,idata,da,wd,rd;
     wire [3:0] ws;
@@ -19,6 +19,6 @@ module ai_soc #(
         .BAUD(BAUD),.STALL_REQUESTS(STALL_REQUESTS)) bus(
         .clk(clk),.rst(rst),.iv(iv),.ir(ir),.ia(ia),.ip(ip),.instruction_data(idata),
         .dv(dv),.dr(dr),.dw(dw),.da(da),.wd(wd),.ws(ws),.dp(dp),.rd(rd),
-        .uart(uart),.demo_status(status),.acc_busy(acc_busy));
+        .uart(uart),.demo_status(status),.acc_busy(acc_busy),.uart_rx_pin(uart_rx_pin));
     assign led = {trap_valid || status == 2, status == 1, acc_busy};
 endmodule

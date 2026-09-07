@@ -7,7 +7,7 @@ module soc_tb;
     integer fd,clocks=0,starts=0,pass_writes=0;
     string filename;
     ai_soc #(.ROM_HEX(ROM_HEX),.RAM_HEX(RAM_HEX),
-        .STALL_REQUESTS(STALL_REQUESTS)) dut(clk,rst,uart,led);
+        .STALL_REQUESTS(STALL_REQUESTS)) dut(clk,rst,uart,led,1'b1);
     uart_monitor monitor(clk,rst,uart,byte_valid,byte_data);
     always #5 clk=~clk;
     always @(posedge byte_valid) begin $fwrite(fd,"%c",byte_data);end
