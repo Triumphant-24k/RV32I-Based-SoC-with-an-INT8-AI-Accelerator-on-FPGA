@@ -7,13 +7,13 @@ PASS: random-delay/backpressure memory mode (54 cycles, one store)
 PASS: memory-wait regression (3 modes)
 PASS: generated differential regression (300 tests, seed 52a1c0de)
 PASS: generated 266 independent reference vectors, seed 20260907
-demo: 346 static instructions, RV32I opcode audit PASS; mnemonics: add, addi, andi, auipc, beq, bgeu, bltu, bne, jal, jalr, lb, lbu, lui, lw, sb, slli, srai, srl, srli, sub, sw, xor
-cpu: 280 static instructions, RV32I opcode audit PASS; mnemonics: add, addi, andi, auipc, beq, bgeu, bltu, bne, jal, jalr, lb, lbu, lui, lw, sb, slli, srai, srl, srli, sub, sw, xor
+demo: 372 static instructions, RV32I opcode audit PASS; mnemonics: add, addi, and, andi, auipc, beq, bgeu, blt, bltu, bne, jal, jalr, lb, lbu, lui, lw, sb, slli, srai, srl, srli, sub, sw, xor
+cpu: 298 static instructions, RV32I opcode audit PASS; mnemonics: add, addi, and, andi, auipc, beq, bgeu, blt, bltu, bne, jal, jalr, lb, lbu, lui, lw, sb, slli, srai, srl, srli, sub, sw, xor
 PASS: accelerator 266 vectors, all reset ages, busy writes, MMIO, 12455 checks
 PASS: UART all 256 bytes, exact 8N1 timing, busy writes and reset
 PASS: bus isolation, synchronous ROM/RAM, strobes, holes, stalls, counter wrap, reset; 61 checks
 PASS: reset synchronization/debounce, LED and decoded UART bring-up
-PASS: real CPU firmware CPU_ONLY=0 STALL_REQUESTS=0 clocks=337242 starts=26 UART=build/soc_uart.txt
-PASS: real CPU firmware CPU_ONLY=0 STALL_REQUESTS=1 clocks=386582 starts=26 UART=build/soc_stalls_uart.txt
-PASS: real CPU firmware CPU_ONLY=1 STALL_REQUESTS=0 clocks=216078 starts=0 UART=build/cpu_only_uart.txt
+PASS: real CPU firmware CPU_ONLY=0 STALL_REQUESTS=0 clocks=357822 starts=26 UART=build/soc_uart.txt
+PASS: real CPU firmware CPU_ONLY=0 STALL_REQUESTS=1 clocks=407703 starts=26 UART=build/soc_stalls_uart.txt
+PASS: real CPU firmware CPU_ONLY=1 STALL_REQUESTS=0 clocks=231023 starts=0 UART=build/cpu_only_uart.txt
 PASS: fatal lint, synthesis check, two clocked 4096-word memories, one signed 8x8 multiplier
