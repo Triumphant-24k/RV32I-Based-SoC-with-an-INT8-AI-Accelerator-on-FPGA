@@ -12,10 +12,10 @@ while {[llength $argv]} {
             if {![llength $argv]} {error "Missing demo name"}
             set demo [lindex $argv 0];set argv [lrange $argv 1 end]
         }
-        default {error "Unknown argument $option; use --demo integrated|cpu|uart|led and optional --program"}
+        default {error "Unknown argument $option; use --demo integrated|cpu|uart|led|gui and optional --program"}
     }
 }
-if {$demo ni {integrated cpu uart led}} {error "Unknown demo $demo"}
+if {$demo ni {integrated cpu uart led gui}} {error "Unknown demo $demo"}
 set bit [file join $root build vivado arty_a7_100t $demo arty_a7_top.bit]
 if {![file isfile $bit] || [file size $bit]==0} {error "Missing/empty bitstream: $bit; complete a successful Vivado build first"}
 if {!$program} {

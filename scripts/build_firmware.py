@@ -28,7 +28,7 @@ def emit_images(elf, stem):
         assert paddr+filesz <= len(rom), f'ROM segment overflow: {paddr:x}'
         assert vaddr+memsz <= 0x4000 or (0x10000<=vaddr and vaddr+memsz<=0x13000)
         rom[paddr:paddr+filesz]=data[off:off+filesz]
-    dest=ROOT/'build'/'firmware' if stem.startswith('board') else ROOT/'firmware'/'hex'
+    dest=ROOT/'build'/'firmware' if (stem.startswith('board') or stem=='gui') else ROOT/'firmware'/'hex'
     dest.mkdir(exist_ok=True)
     for kind,blob in [('rom',rom),('ram',ram)]:
         path=dest/f'{stem}_{kind}.hex'
@@ -54,13 +54,13 @@ def main():
     generate()
     out=ROOT/'build'/'firmware'; out.mkdir(parents=True,exist_ok=True)
     for stem,defines in [('demo',[]),('cpu',['-DCPU_ONLY']),
-                         ('board',['-DBOARD_REPORT']),('board_cpu',['-DBOARD_REPORT','-DCPU_ONLY'])]:
+                         ('board',['-DBOARD_REPORT']),('board_cpu',['-DBOARD_REPORT','-DCPU_ONLY']),('gui',[])]:
         elf=out/f'{stem}.elf'
         flags=['-march=rv32i','-mabi=ilp32','-O2','-ffreestanding','-fno-builtin',
                '-fno-pic','-msmall-data-limit=0','-mno-relax','-fno-inline-functions',
                '-nostdlib','-nostartfiles','-Wall','-Wextra','-Werror',
                '-Wl,--no-relax','-T','firmware/link.ld',f'-Wl,-Map,build/firmware/{stem}.map']
-        run([PREFIX+'gcc',*flags,*defines,'firmware/start.S','firmware/main.c','-o',str(elf)])
+        run([PREFIX+'gcc',*flags,*defines,'firmware/start.S',('firmware/interactive.c' if stem=='gui' else 'firmware/main.c'),'-o',str(elf)])
         dis=run([PREFIX+'objdump','-d','-M','no-aliases',str(elf)])
         (out/f'{stem}.dis').write_text(dis)
         message=audit(dis)

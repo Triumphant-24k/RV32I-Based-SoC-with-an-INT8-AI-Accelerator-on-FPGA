@@ -39,7 +39,7 @@ module arty_a7_top #(
             end else heartbeat_count<=heartbeat_count+1'b1;
             // Integrated mode stretches the accelerator's eight-clock busy pulse
             // for 50 ms at defaults. Smoke modes retain the tested RX/TX indicator.
-            // RX never controls CPU/accelerator state or implements a command port.
+            // The SoC receiver independently synchronizes RX for interactive commands.
             if(MODE==0 ? soc_led[0] : (!rx_sync[1] || !uart_tx))
                 activity_count<=ACTIVITY_CYCLES[AW-1:0];
             else if(activity_count!=0)activity_count<=activity_count-1'b1;
@@ -48,7 +48,7 @@ module arty_a7_top #(
     generate
         if(MODE==0)begin: integrated
             ai_soc #(.CLOCK_HZ(CLOCK_HZ),.BAUD(BAUD),.ROM_HEX(ROM_HEX),.RAM_HEX(RAM_HEX))
-                soc(clk,rst,uart_tx,soc_led);
+                soc(clk,rst,uart_tx,soc_led,uart_rx);
         end else if(MODE==1)begin: serial_smoke
             uart_hello #(.CLOCK_HZ(CLOCK_HZ),.BAUD(BAUD)) greeting(clk,rst,uart_tx);
             assign soc_led=0;

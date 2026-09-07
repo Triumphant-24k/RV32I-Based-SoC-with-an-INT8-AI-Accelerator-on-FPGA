@@ -10,7 +10,7 @@ module soc_bus #(
     input wire dv, output wire dr, input wire dw,
     input wire [31:0] da, input wire [31:0] wd, input wire [3:0] ws,
     output reg dp, output wire [31:0] rd,
-    output wire uart, output reg [1:0] demo_status, output wire acc_busy
+    output wire uart, output reg [1:0] demo_status, output wire acc_busy, input wire uart_rx_pin
 );
     (* ram_style = "block" *) reg [31:0] rom [0:4095];
     (* ram_style = "block" *) reg [31:0] ram [0:4095];
@@ -35,6 +35,15 @@ module soc_bus #(
     wire [31:0] acc_cycles;
     wire uart_busy;
     wire uart_start = full_write && da == 32'h40000104;
+
+    wire [7:0] rx_data;
+    wire rx_valid, rx_framing, rx_overrun;
+    wire rx_consume=daccept && !dw && aligned_da==32'h40000110;
+    wire [1:0] rx_clear=(full_write && da==32'h40000114) ? wd[2:1] : 2'b00;
+    uart_rx #(.CLOCK_HZ(CLOCK_HZ),.BAUD(BAUD)) receiver(
+        .clk(clk),.rst(rst),.rx(uart_rx_pin),.consume(rx_consume),
+        .clear_errors(rx_clear),.data(rx_data),.valid(rx_valid),
+        .framing_error(rx_framing),.overrun(rx_overrun));
 
     assign instruction_data = instruction_in_range ? instruction_q : 32'hffffffff;
     assign rd = read_select == 0 ? rom_q : read_select == 1 ? ram_q : io_q;
@@ -78,6 +87,8 @@ module soc_bus #(
                 else case (aligned_da)
                     32'h40000100: io_q <= clock_count;
                     32'h40000108: io_q <= {31'd0,uart_busy};
+                    32'h40000110: io_q <= {24'd0,rx_data};
+                    32'h40000114: io_q <= {29'd0,rx_overrun,rx_framing,rx_valid};
                     32'h4000010c: io_q <= {30'd0,demo_status};
                     default: io_q <= 0;
                 endcase

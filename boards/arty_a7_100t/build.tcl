@@ -17,18 +17,19 @@ while {[llength $argv]} {
         default {error "Unknown build argument $option"}
     }
 }
-if {$demo ni {integrated cpu uart led}} {error "Demo must be integrated, cpu, uart, or led"}
+if {$demo ni {integrated cpu uart led gui}} {error "Demo must be integrated, cpu, uart, led, or gui"}
 if {![regexp {^xc7a100t[a-z0-9-]+$} $part]} {error "Part is not an Arty A7-100 device: $part"}
 set top arty_a7_top
-set mode [dict get {integrated 0 cpu 0 uart 1 led 2} $demo]
+set mode [dict get {integrated 0 cpu 0 gui 0 uart 1 led 2} $demo]
 set stem [expr {$demo eq "cpu" ? "board_cpu" : "board"}]
+if {$demo eq "gui"} {set stem gui}
 set rom build/firmware/${stem}_rom.hex
 set ram build/firmware/${stem}_ram.hex
 set xdc boards/arty_a7_100t/arty_a7_100t.xdc
 set sources {
     rtl/alu.v rtl/branch_unit.v rtl/control_unit.v rtl/cpu_core.v
     rtl/immediate_generator.v rtl/load_store_unit.v rtl/register_file.v
-    rtl/soc/int8_accelerator.sv rtl/soc/uart_tx.sv rtl/soc/soc_bus.sv rtl/soc/ai_soc.sv
+    rtl/soc/int8_accelerator.sv rtl/soc/uart_rx.sv rtl/soc/uart_tx.sv rtl/soc/soc_bus.sv rtl/soc/ai_soc.sv
     rtl/board/reset_conditioner.sv rtl/board/uart_hello.sv
     boards/arty_a7_100t/arty_a7_top.sv
 }

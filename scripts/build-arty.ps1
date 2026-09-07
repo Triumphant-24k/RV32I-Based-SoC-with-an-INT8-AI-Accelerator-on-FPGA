@@ -1,5 +1,5 @@
 param(
-    [ValidateSet('integrated','cpu','uart','led')][string]$Demo = 'integrated',
+    [ValidateSet('integrated','cpu','uart','led','gui')][string]$Demo = 'integrated',
     [string]$Vivado = 'vivado.bat',
     [string]$Part = 'xc7a100tcsg324-1',
     [string]$Distribution = 'Ubuntu-22.04'
@@ -9,7 +9,7 @@ $tool = Get-Command $Vivado -ErrorAction SilentlyContinue
 if (!$tool) { throw 'Vivado not found. Use a Vivado command prompt or pass -Vivado with the full path to vivado.bat. No build was attempted.' }
 Push-Location (Split-Path -Parent $PSScriptRoot)
 try {
-    if ($Demo -in @('integrated','cpu')) {
+    if ($Demo -in @('integrated','cpu','gui')) {
         & wsl.exe -d $Distribution -- python3 scripts/build_firmware.py
         if ($LASTEXITCODE -ne 0) { throw 'Firmware build/validation failed' }
     }

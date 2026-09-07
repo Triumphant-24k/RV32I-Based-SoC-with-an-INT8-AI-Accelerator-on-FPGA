@@ -7,5 +7,5 @@ module fpga_top #(
     wire rst;
     reset_conditioner #(.RELEASE_CYCLES(RELEASE_CYCLES)) reset_i(clk,external_reset,rst);
     ai_soc #(.CLOCK_HZ(CLOCK_HZ),.BAUD(BAUD),.ROM_HEX(ROM_HEX),.RAM_HEX(RAM_HEX))
-        soc(clk,rst,uart_tx_pin,led);
+        soc(clk,rst,uart_tx_pin,led,1'b1);
 endmodule
