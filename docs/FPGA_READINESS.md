@@ -1,5 +1,9 @@
 # FPGA readiness — September 6, 2026
 
+This is the September 6 snapshot. The current BTN0 reset, busy LED and isolated
+Vivado run flow are described in [ARTY_BRINGUP.md](ARTY_BRINGUP.md); their September 7
+verification is recorded in [ARTY_HARDWARE_READINESS.md](ARTY_HARDWARE_READINESS.md).
+
 The full existing regression passed before edits and again after the Arty additions. The CPU, accelerator and memory map are unchanged. The 30 imported source files still match source commit `64977acc99bfd37eb6c43121e6377a9b47105b72`. No commit or push was made during this work.
 
 ## Reproduction and results

@@ -63,7 +63,8 @@ The FPGA top exposes only clock, external reset, UART TX, and status LEDs. Board
 clock, part, pins, voltages, and reset polarity remain allocation-time decisions.
 
 The paragraph above describes the original generic `fpga_top`. The separate Arty
-shell added September 6 uses `clk`, active-low `reset_n`, `uart_rx`, `uart_tx`, and
-four LEDs. RX is synchronized for an activity indicator only. It does not alter
+shell now uses `clk`, active-high BTN0 `reset_btn`, `uart_rx`, `uart_tx`, and
+four LEDs. RX is synchronized for a smoke-mode activity indicator only. Integrated
+LED1 displays reset or accelerator activity stretched to 50 ms. This does not alter
 the peripheral map or add a firmware input protocol. Arty settings and official
 constraint sources are documented in `docs/ARTY_BRINGUP.md`.

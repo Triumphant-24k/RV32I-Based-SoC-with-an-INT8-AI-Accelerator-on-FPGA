@@ -33,7 +33,7 @@ riscv-int8-ai-accelerator/
     ├── board.template.tcl            # Unfilled settings for a future generic board
     ├── pins.template.xdc             # Unconfigured pin template; intentionally stops builds
     ├── arty_a7_100t/                 # Primary target: Arty A7-100T, 100 MHz onboard clock
-    │   ├── arty_a7_top.sv            # Physical top: active-low reset, UART and four LEDs
+    │   ├── arty_a7_top.sv            # Physical top: active-high BTN0, UART and four LEDs
     │   ├── arty_a7_100t.xdc          # Digilent-source pin assignments and 10 ns clock
     │   └── build.tcl                 # Guarded Vivado synthesis/place/route/bitstream flow
     └── xilinx_artix7_unknown/        # Backup board pending exact identification
@@ -129,6 +129,7 @@ riscv-int8-ai-accelerator/
 │   ├── lint.vlt                     # Narrow waivers for explicitly unused fields/signals
 │   ├── handoff.py                   # Refreshes small evidence reports from successful test outputs
 │   ├── build-arty.ps1               # Windows Vivado launcher for LED/UART/CPU/integrated demos
+│   ├── program-arty.tcl             # Manual JTAG programming; no hardware access by default
 │   ├── vivado_prepare.tcl           # Older generic-board synthesis/checkpoint preparation
 │   ├── build-programs.sh            # Inherited smoke builder; output byte-order issue documented
 │   ├── run-questa.ps1               # Original ModelSim/Questa CPU suite launcher; recreates work/
@@ -151,6 +152,7 @@ riscv-int8-ai-accelerator/
 │   ├── DEMO.md                       # Presentation outline and benchmark explanation
 │   ├── BRINGUP.md                    # Generic board guide with a pointer to the Arty target
 │   ├── ARTY_BRINGUP.md               # Arty pins, build flow, UART/LED settings and bench sequence
+│   ├── ARTY_HARDWARE_READINESS.md     # BTN0/busy LED changes and current board-flow verification
 │   ├── VERIFICATION.md               # Original dated CPU/SoC verification snapshot
 │   └── FPGA_READINESS.md             # Dated Arty readiness results and pending hardware work
 ├── reports/                          # Selected small evidence files retained in the repository

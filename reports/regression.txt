@@ -27,11 +27,12 @@ PASS: Tcl preflight demo=cpu part=xc7a100tcsg324-1; sources, constraints and sel
 PASS: Tcl preflight demo=uart part=xc7a100tcsg324-1; sources, constraints and selected images exist
 PASS: Tcl preflight demo=led part=xc7a100tcsg324-1; sources, constraints and selected images exist
 PASS: 8 XDC pins match synthesized top ports/directions and recorded Digilent mapping; 10 ns clock
-PASS: real Tcl preflight for 4 modes; missing-Vivado error; 6 mocked build/bitstream-gate scenarios (not Vivado execution)
+PASS: real Tcl preflight for 4 modes from separate directory; staged images/source paths; missing-Vivado error; 6 mocked bitstream gates (not Vivado execution)
+PASS: 6 mocked manual-programming guards; default opens no hardware; no device programmed
 PASS: UART all 256 bytes, exact 8N1 timing, busy writes and reset
 PASS: Arty standalone LED/reset/RX activity and 2 decoded Hello messages at 100 MHz/115200 baud
-PASS: Arty wrapper real CPU CPU_ONLY=0, 26 cases, 26 accepted starts, 1377752 clocks; POR, reset, heartbeat, LEDs
+PASS: Arty wrapper real CPU CPU_ONLY=0, 26 cases, 26 accepted starts, 1377752 clocks; POR, BTN0 reset, heartbeat, busy LED (208 clocks)
 PASS: build/arty_uart.txt, 26 decimal result/cycle reports and 52 calculated speedup values
-PASS: Arty wrapper real CPU CPU_ONLY=1, 26 cases, 0 accepted starts, 515942 clocks; POR, reset, heartbeat, LEDs
+PASS: Arty wrapper real CPU CPU_ONLY=1, 26 cases, 0 accepted starts, 515942 clocks; POR, BTN0 reset, heartbeat, busy LED (0 clocks)
 PASS: build/arty_cpu_uart.txt, 26 decimal result/cycle reports
 PASS: FPGA readiness checks; Vivado implementation and physical validation NOT RUN

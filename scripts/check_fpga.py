@@ -3,6 +3,7 @@
 import ctypes
 import ctypes.util
 import json
+import os
 import pathlib
 import re
 import sys
@@ -65,18 +66,24 @@ def tcl_eval(code):
     lib.Tcl_GetStringResult.argtypes=[ctypes.c_void_p];lib.Tcl_GetStringResult.restype=ctypes.c_char_p
     lib.Tcl_DeleteInterp.argtypes=[ctypes.c_void_p]
     interp=lib.Tcl_CreateInterp()
+    old_cwd=os.getcwd()
     try:
         if lib.Tcl_Init(interp):raise RuntimeError('Tcl initialization failed')
         rc=lib.Tcl_Eval(interp,code.encode())
         result=lib.Tcl_GetStringResult(interp).decode(errors='replace')
         return rc,result
-    finally:lib.Tcl_DeleteInterp(interp)
+    finally:
+        lib.Tcl_DeleteInterp(interp)
+        os.chdir(old_cwd)
 
 def tcl_checks():
     source='source {'+str(ROOT/'boards'/'arty_a7_100t'/'build.tcl')+'}'
-    for demo in ['integrated','cpu','uart','led']:
-        rc,msg=tcl_eval(f'set argv {{--check-only --demo {demo}}}; {source}')
-        assert rc==0,msg
+    # Start outside the repository, with spaces in the directory name, matching
+    # a separate Vivado working directory rather than relying on the caller cwd.
+    with tempfile.TemporaryDirectory(prefix='separate Vivado run ',dir=ROOT/'build') as temp:
+        for demo in ['integrated','cpu','uart','led']:
+            rc,msg=tcl_eval(f'cd {{{temp}}};set argv {{--check-only --demo {demo}}}; {source}')
+            assert rc==0,msg
     rc,msg=tcl_eval('set argv {}; '+source)
     assert rc!=0 and 'Vivado is unavailable' in msg
     # Execute guard branches with explicit mocks. These are script contract tests,
@@ -85,15 +92,29 @@ def tcl_checks():
         proc puts args {}
         rename open real_open
         proc open {path args} {
-            if {[string match build/vivado/* $path]} {
-                set path [file join build tcl-contract $::scenario [file tail $path]]
+            if {[string match */build/vivado/* $path]} {
+                set path [file join $::root build tcl-contract $::scenario [file tail $path]]
                 file mkdir [file dirname $path]
             }
             return [real_open $path {*}$args]
         }
-        foreach cmd {read_verilog read_xdc synth_design report_utilization write_checkpoint
+        foreach cmd {report_utilization write_checkpoint
                      opt_design place_design phys_opt_design report_route_status report_timing_summary
                      report_clock_interaction report_cdc report_drc} {proc $cmd args {}}
+        proc read_verilog {flag path} {
+            if {$flag ne "-sv" || ![file isfile $path] || [string match */tb/* $path] ||
+                [file tail $path] in {cpu_sim_top.v simulation_memory.v}} {error "Bad synthesis source $path"}
+        }
+        proc read_xdc {path} {if {![file isfile $path]} {error "Missing XDC"}}
+        proc synth_design args {
+            if {[pwd] ne [file join $::root build vivado arty_a7_100t integrated]} {error "Wrong build working directory"}
+            foreach name {rom.hex ram.hex} {
+                if {![file isfile $name] || [file size $name]==0} {error "Missing staged memory $name"}
+            }
+            foreach generic {{ROM_HEX="rom.hex"} {RAM_HEX="ram.hex"}} {
+                if {[lsearch -exact [dict get $args -generic] $generic]<0} {error "Bad memory generic $generic"}
+            }
+        }
         proc route_design {} {if {$::scenario eq "route"} {error "mock route failure"}}
         proc get_parts args {return xc7a100tcsg324-1}
         proc get_ports args {return {clk reset_btn uart_rx uart_tx led[0] led[1] led[2] led[3]}}
@@ -122,7 +143,40 @@ def tcl_checks():
         code+='set failed [catch {'+source+'} message];list $failed $wrote'
         rc,msg=tcl_eval(code)
         assert rc==0 and msg==('0 1' if scenario=='success' else '1 0'),(scenario,rc,msg)
-    print('PASS: real Tcl preflight for 4 modes; missing-Vivado error; 6 mocked build/bitstream-gate scenarios (not Vivado execution)')
+    print('PASS: real Tcl preflight for 4 modes from separate directory; staged images/source paths; missing-Vivado error; 6 mocked bitstream gates (not Vivado execution)')
+
+def programming_checks():
+    source='source {'+str(ROOT/'scripts'/'program-arty.tcl')+'}'
+    rc,msg=tcl_eval('set argv {--demo nonexistent};'+source)
+    assert rc!=0 and 'Unknown demo' in msg
+    # No file is created and no hardware API is called. All hardware commands and
+    # bitstream metadata below are explicit mocks, including the success case.
+    mocks=r'''
+        proc puts args {}
+        rename file real_file
+        proc file {sub args} {
+            if {[string match *.bit [lindex $args 0]]} {
+                if {$sub eq "isfile"} {return [expr {$::scenario ne "missing"}]}
+                if {$sub eq "size"} {return 16}
+            }
+            return [real_file $sub {*}$args]
+        }
+        proc open_hw_manager {} {incr ::opened}
+        foreach cmd {connect_hw_server current_hw_target open_hw_target current_hw_device
+                     refresh_hw_device set_property close_hw_manager} {proc $cmd args {}}
+        proc get_hw_targets {} {if {$::scenario eq "targets"} {return {one two}};return one}
+        proc get_hw_devices {} {if {$::scenario eq "devices"} {return {one two}};return one}
+        proc get_property args {if {$::scenario eq "wrong"} {return xc7a35t};return xc7a100t}
+        proc program_hw_devices args {incr ::programmed}
+    '''
+    for scenario in ['missing','dry','success','targets','devices','wrong']:
+        argv='' if scenario=='dry' else '--program'
+        code=f'set scenario {scenario};set opened 0;set programmed 0;'+mocks+f'\nset argv {{{argv}}};'
+        code+='set failed [catch {'+source+'} message];list $failed $opened $programmed'
+        rc,msg=tcl_eval(code)
+        expected={'missing':'1 0 0','dry':'0 0 0','success':'0 1 1'}.get(scenario,'1 1 0')
+        assert rc==0 and msg==expected,(scenario,rc,msg)
+    print('PASS: 6 mocked manual-programming guards; default opens no hardware; no device programmed')
 
 def xdc_checks():
     text=(ROOT/'boards'/'arty_a7_100t'/'arty_a7_100t.xdc').read_text()
@@ -130,6 +184,7 @@ def xdc_checks():
     expected={'clk':'E3','reset_btn':'D9','uart_rx':'D10','uart_tx':'A9',
               'led[0]':'H5','led[1]':'J5','led[2]':'T9','led[3]':'T10'}
     assert mapping==expected and len(set(mapping.values()))==8
+    assert re.search(r'set_property PULLUP true \[get_ports \{uart_rx\}\]',text)
     assert len(re.findall(r'^create_clock ',text,re.M))==1 and '-period 10.000' in text
     net=json.loads((ROOT/'build'/'arty_synthesis.json').read_text())
     ports=net['modules']['arty_a7_top']['ports']
@@ -144,7 +199,7 @@ def xdc_checks():
 def main():
     image_checks()
     command([sys.executable,'scripts/check_rtl.py','--arty'],'build/arty_rtl_checks.txt')
-    xdc_checks();tcl_checks()
+    xdc_checks();tcl_checks();programming_checks()
     simulate('uart_tb',['tb/soc/uart_tb.sv'],['-Puart_tb.CLOCK_HZ=100000000','-Puart_tb.BAUD=115200'],name='uart_arty_divider')
     simulate('arty_smoke_tb',[*BOARD_RTL,'tb/soc/uart_monitor.sv','tb/soc/arty_smoke_tb.sv'])
     rows={}

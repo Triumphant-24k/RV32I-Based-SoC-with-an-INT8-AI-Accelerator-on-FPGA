@@ -60,11 +60,55 @@ The reused code retains its MIT licence and copyright notice. Original versions 
 
 ## FPGA target
 
-The Arty A7-100T version uses the onboard 100 MHz clock, USB-UART at 115200 baud, and four LEDs for heartbeat, reset/UART activity, PASS, and FAIL. A separate board wrapper handles the pins and reset polarity, so the CPU and accelerator stay portable.
+The Arty A7-100T version uses the onboard 100 MHz clock, USB-UART at 115200 baud, and four LEDs for heartbeat, reset/accelerator activity, PASS, and FAIL. BTN0 provides active-high reset. A separate board wrapper handles the pins and reset conditioning, so the CPU and accelerator stay portable.
 
 The board firmware adds a boot message, decimal results, and speedup calculated from the measured cycle counts. Separate LED and UART smoke-test modes support the first stages of bring-up. An unidentified Artix-7 board is listed as a possible backup, with its pinout and device details still pending.
 
 The Vivado flow and official-source Arty constraints are prepared. Vivado implementation and a programmed-board demonstration have not yet been completed.
+
+## Arty A7-100T Hardware Setup
+
+The target is the **Digilent Arty A7-100T, xc7a100tcsg324-1**. Connect a data-capable USB-A-to-micro-B cable to the board's USB-JTAG/UART port. Vivado needs 7-series device support and the cable drivers; the firmware helper uses the existing Ubuntu-22.04 WSL RISC-V toolchain.
+
+From this repository in a Vivado-enabled PowerShell session:
+
+```powershell
+.\scripts\run-regression.ps1
+.\scripts\build-arty.ps1 -Demo integrated
+```
+
+The build rebuilds firmware, runs implementation and checks timing/DRC before requesting `build/vivado/arty_a7_100t/integrated/arty_a7_top.bit`. Open **Vivado Hardware Manager → Open Target → Auto Connect**, confirm the connected XC7A100T board, and use **Program Device** with that bitstream. Programming is a separate manual step; the build never connects to hardware. The [bring-up guide](docs/ARTY_BRINGUP.md) also covers LED, UART and CPU-only smoke builds and the optional manual programming script.
+
+Use [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/) or [Tera Term](https://teratermproject.github.io/) at **115200 baud, 8-N-1, no flow control**. In Windows Device Manager, expand **Ports (COM & LPT)** and compare the list before and after plugging in the board to find its USB serial COM port. Open that port before pressing **BTN0**. One complete 26-case report prints after startup or reset; it does not loop continuously.
+
+| LED | Integrated demo meaning |
+| --- | --- |
+| LED0 | Heartbeat, toggling every half second |
+| LED1 | Reset active, or accelerator busy/activity held visible for 50 ms |
+| LED2 | All comparisons passed; stays on until reset |
+| LED3 | Comparison failure or CPU trap |
+
+BTN0 is D9, low at rest and high when pressed. Holding it resets the CPU and UART; release is synchronized and delayed by 10 ms. Configuration also starts that reset sequence automatically. The red reset button is not the demo reset input. UART directions are **FPGA RX = D10, FPGA TX = A9**, following the [official Digilent master XDC](https://github.com/Digilent/digilent-xdc/blob/master/Arty-A7-100-Master.xdc); the bridge's signal names use the opposite perspective.
+
+Example from simulation, with measured counters rather than fixed performance text:
+
+```text
+RV32I SoC Booted
+COUNTER_READ_DELTA=00000005
+Test: 0
+CPU result: 0
+Accelerator result: 0
+CPU cycles: 1870
+Accelerator cycles: 8
+End-to-end cycles: 388
+Speedup: 4.81x
+Compute-only speedup: 233.75x
+TEST PASSED
+```
+
+The remaining cases include positive, negative and INT8-limit inputs; the final line is `ALL PASS`. This is an INT8 dot-product accelerator for quantized-AI compute kernels, not a complete neural-network processor.
+
+For **no UART output**, check heartbeat, USB data cable, 115200/8-N-1/no-flow settings, then press BTN0 with the terminal open; the standalone `-Demo uart` image isolates the serial path. For an **incorrect or busy COM port**, identify the newly connected USB serial device and close other programs using it. For **failed timing**, inspect `timing_summary.txt`, `check_timing.txt` and `drc.txt` in the demo build folder; do not treat an older bitstream as a successful new build. For **missing initialization**, rerun the build helper: it generates and validates the board images, then stages `rom.hex` and `ram.hex` beside the Vivado run.
 
 ## Directory structure
 
