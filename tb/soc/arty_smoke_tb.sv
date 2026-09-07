@@ -1,15 +1,15 @@
 `timescale 1ns/1ps
 module arty_smoke_tb;
-    reg clk=0,reset_n=1,rx=1;
+    reg clk=0,reset_btn=0,rx=1;
     wire tx,led_tx;wire[3:0]led,led_only;
     wire bv;wire[7:0]bd;
     integer bytes=0,i;
     reg [55:0] greeting={"Hello",8'h0d,8'h0a};
     // UART uses the real Arty defaults: 100 MHz / 115200 = 868 clocks per bit.
     arty_a7_top #(.MODE(1),.RELEASE_CYCLES(4),.HEARTBEAT_CYCLES(10),.ACTIVITY_CYCLES(20))
-        uart_dut(clk,reset_n,rx,tx,led);
+        uart_dut(clk,reset_btn,rx,tx,led);
     arty_a7_top #(.MODE(2),.RELEASE_CYCLES(4),.HEARTBEAT_CYCLES(10),.ACTIVITY_CYCLES(20))
-        led_dut(clk,reset_n,rx,led_tx,led_only);
+        led_dut(clk,reset_btn,rx,led_tx,led_only);
     uart_monitor #(.DIVISOR(868)) monitor(clk,uart_dut.rst,tx,bv,bd);
     always #5 clk=~clk;
     always @(posedge bv)begin
@@ -25,9 +25,9 @@ module arty_smoke_tb;
         @(negedge clk);rx=1;
         repeat(25)@(posedge clk);#1;if(led_only[1])$fatal(1,"RX activity did not expire");
         wait(bytes==7);repeat(900)@(posedge clk);
-        @(negedge clk);reset_n=0;#1;
+        @(negedge clk);reset_btn=1;#1;
         if(!led[1]||!led_only[1]||led_only[0])$fatal(1,"Reset indication");
-        repeat(2)@(negedge clk);reset_n=1;
+        repeat(2)@(negedge clk);reset_btn=0;
         wait(bytes==14);
         $display("PASS: Arty standalone LED/reset/RX activity and 2 decoded Hello messages at 100 MHz/115200 baud");$finish;
     end

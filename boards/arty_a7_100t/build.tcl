@@ -56,16 +56,22 @@ if {$check_only} {
 }
 if {![llength [info commands synth_design]]} {error "Vivado is unavailable: launch this script inside Vivado batch mode"}
 if {[llength [get_parts $part]]!=1} {error "Install Vivado support for part $part"}
-set out build/vivado/arty_a7_100t/$demo
+set out [file join $root build vivado arty_a7_100t $demo]
 file mkdir $out
-# Source paths and image generics are relative to root, including when the root has spaces.
-# Synthesis consumes the validated image files via the RTL's $readmemh calls.
-foreach path $sources {read_verilog -sv $path}
-read_xdc $xdc
+# Stage validated initialization files beside the run. Relative $readmemh names
+# now resolve even when Vivado was launched from another directory or a path with
+# spaces. Keep .Xil and other vendor working files inside the ignored run folder.
+if {$mode==0} {
+    file copy -force [file join $root $rom] [file join $out rom.hex]
+    file copy -force [file join $root $ram] [file join $out ram.hex]
+}
+cd $out
+foreach path $sources {read_verilog -sv [file join $root $path]}
+read_xdc [file join $root $xdc]
 set generics [list CLOCK_HZ=100000000 BAUD=115200 RELEASE_CYCLES=1000000 MODE=$mode]
-if {$mode==0} {lappend generics "ROM_HEX=\"$rom\"" "RAM_HEX=\"$ram\""}
+if {$mode==0} {lappend generics {ROM_HEX="rom.hex"} {RAM_HEX="ram.hex"}}
 synth_design -top $top -part $part -generic $generics
-set expected_ports [lsort {clk reset_n uart_rx uart_tx led[0] led[1] led[2] led[3]}]
+set expected_ports [lsort {clk reset_btn uart_rx uart_tx led[0] led[1] led[2] led[3]}]
 if {[lsort [get_ports]] ne $expected_ports} {error "Synthesized top does not match the eight constrained physical ports"}
 foreach port [get_ports] {
     if {[get_property PACKAGE_PIN $port] eq "" || [get_property IOSTANDARD $port] ne "LVCMOS33"} {

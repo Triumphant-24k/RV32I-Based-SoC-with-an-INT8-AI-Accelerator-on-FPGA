@@ -66,9 +66,58 @@ The board firmware adds a boot message, decimal results, and speedup calculated 
 
 The Vivado flow and official-source Arty constraints are prepared. Vivado implementation and a programmed-board demonstration have not yet been completed.
 
+## Directory structure
+
+The CPU, SoC peripherals and board support are kept in separate folders. The program counter is part of `cpu_core.v`; the processor's 16 KiB instruction ROM and 16 KiB data RAM are inside `soc_bus.sv`.
+
+```text
+riscv-int8-ai-accelerator/
+├── rtl/                          # Verilog CPU and SystemVerilog SoC hardware
+│   ├── cpu_core.v                # RV32I core, program counter, execution FSM and traps
+│   ├── control_unit.v            # Instruction decoder and datapath control signals
+│   ├── register_file.v           # 32 x 32-bit CPU registers; x0 always reads zero
+│   ├── alu.v                     # Integer arithmetic, logic, comparisons and shifts
+│   ├── immediate_generator.v     # I/S/B/U/J immediate extraction and sign extension
+│   ├── branch_unit.v             # Signed/unsigned branch comparisons
+│   ├── load_store_unit.v         # Load extension, store byte enables and alignment
+│   ├── cpu_sim_top.v             # Original CPU simulation wrapper
+│   ├── simulation_memory.v       # Simulation-only memory with delays/backpressure
+│   ├── soc/                      # Board-independent system and peripherals
+│   │   ├── ai_soc.sv             # Connects the real CPU to the bus and peripherals
+│   │   ├── soc_bus.sv            # 16 KiB ROM, 16 KiB RAM, MMIO decoder and counters
+│   │   ├── int8_accelerator.sv    # Signed 8x8 multiply, INT32 accumulator and control
+│   │   └── uart_tx.sv            # UART transmitter with 8N1 framing and busy flag
+│   └── board/                    # Generic FPGA wrappers and standalone diagnostics
+│       ├── fpga_top.sv           # Generic SoC top with UART and status LEDs
+│       ├── reset_conditioner.sv  # Async reset assertion and stable synchronized release
+│       ├── led_test_top.sv       # Standalone heartbeat/reset test
+│       ├── uart_test_top.sv      # Standalone repeated ASCII U transmitter
+│       └── uart_hello.sv         # Repeated Hello greeting for the Arty UART test
+├── boards/                       # Arty wrapper, verified XDC and Vivado build flow
+├── firmware/                     # C demo, startup assembly, linker and memory images
+├── tb/                           # Self-checking CPU, accelerator, bus and board tests
+├── scripts/                      # Regression, firmware, lint and synthesis helpers
+├── software/                     # Preserved assembly smoke program from the CPU project
+├── verification/                 # Reference vectors, CPU provenance and ACT4 setup
+├── formal/                       # Inherited proof/equivalence setup; not a completed proof
+├── reports/                      # Simulation measurements and selected test evidence
+├── docs/                         # Architecture, register map, verification and bring-up
+├── outputs/                      # Local Word audit report
+├── build/                        # Generated simulations, firmware and synthesis outputs
+├── work/                         # Local CPU import archive; excluded from Git
+├── Makefile                      # Linux test, firmware and lint/synthesis entry points
+├── LICENSE                       # MIT licence and copyright notice
+└── README.md                     # Project overview
+```
+
+The accelerator operates on two vectors of eight signed INT8 values. Its input buffers, multiplier, accumulator and state control are all in one module, mapped at `0x40000000`.
+
+The [complete directory guide](docs/DIRECTORY_STRUCTURE.md) expands every source folder and explains each file, including firmware, testbenches, scripts and reports. Generated build files are summarized by purpose.
+
 ## Project documentation
 
 - [Architecture and block diagram](docs/ARCHITECTURE.md)
+- [Complete directory and file guide](docs/DIRECTORY_STRUCTURE.md)
 - [Register map and arithmetic specification](docs/SPEC.md)
 - [Verification results](docs/VERIFICATION.md)
 - [Development notes](docs/DEVELOPMENT.md)

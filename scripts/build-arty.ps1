@@ -15,6 +15,10 @@ try {
     }
     $out = "build/vivado/arty_a7_100t/$Demo"
     New-Item -ItemType Directory -Force -Path $out | Out-Null
-    & $tool.Source -mode batch -source boards/arty_a7_100t/build.tcl -log "$out/vivado.log" -journal "$out/vivado.jou" -tclargs --demo $Demo --part $Part
-    if ($LASTEXITCODE -ne 0) { throw "Vivado failed with exit code $LASTEXITCODE; inspect $out" }
+    $buildScript = Join-Path (Get-Location) 'boards/arty_a7_100t/build.tcl'
+    Push-Location $out
+    try {
+        & $tool.Source -mode batch -source $buildScript -log vivado.log -journal vivado.jou -tclargs --demo $Demo --part $Part
+        if ($LASTEXITCODE -ne 0) { throw "Vivado failed with exit code $LASTEXITCODE; inspect $out" }
+    } finally { Pop-Location }
 } finally { Pop-Location }

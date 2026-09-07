@@ -25,7 +25,7 @@ def main(arty=False):
     (ROOT/'build'/f'{prefix}synth.ys').write_text(script)
     command(['yosys','-Q','-T','-q','-l',f'build/{prefix}synthesis_full.txt','-s',f'build/{prefix}synth.ys'],f'build/{prefix}synthesis.txt')
     net=json.loads((ROOT/'build'/f'{prefix}synthesis.json').read_text())
-    expected={'clk','reset_n','uart_rx','uart_tx','led'} if arty else {'clk','external_reset','uart_tx_pin','led'}
+    expected={'clk','reset_btn','uart_rx','uart_tx','led'} if arty else {'clk','external_reset','uart_tx_pin','led'}
     assert set(net['modules'][target]['ports']) == expected, 'Unexpected physical interface'
     memories=[];multipliers=[]
     for name,mod in net['modules'].items():

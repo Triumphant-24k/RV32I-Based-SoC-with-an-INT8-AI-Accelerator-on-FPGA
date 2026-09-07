@@ -96,7 +96,7 @@ def tcl_checks():
                      report_clock_interaction report_cdc report_drc} {proc $cmd args {}}
         proc route_design {} {if {$::scenario eq "route"} {error "mock route failure"}}
         proc get_parts args {return xc7a100tcsg324-1}
-        proc get_ports args {return {clk reset_n uart_rx uart_tx led[0] led[1] led[2] led[3]}}
+        proc get_ports args {return {clk reset_btn uart_rx uart_tx led[0] led[1] led[2] led[3]}}
         proc get_clocks args {return soc_clock}
         proc get_property {property object} {
             switch -- $property {
@@ -127,7 +127,7 @@ def tcl_checks():
 def xdc_checks():
     text=(ROOT/'boards'/'arty_a7_100t'/'arty_a7_100t.xdc').read_text()
     mapping=dict((port,pin) for pin,port in re.findall(r'PACKAGE_PIN\s+(\w+)\s+IOSTANDARD LVCMOS33\}\s+\[get_ports\s+\{([^}]+)\}',text))
-    expected={'clk':'E3','reset_n':'C2','uart_rx':'D10','uart_tx':'A9',
+    expected={'clk':'E3','reset_btn':'D9','uart_rx':'D10','uart_tx':'A9',
               'led[0]':'H5','led[1]':'J5','led[2]':'T9','led[3]':'T10'}
     assert mapping==expected and len(set(mapping.values()))==8
     assert len(re.findall(r'^create_clock ',text,re.M))==1 and '-period 10.000' in text
@@ -137,7 +137,7 @@ def xdc_checks():
     for name,port in ports.items():
         if len(port['bits'])==1:expanded.add(name)
         else:expanded.update(f'{name}[{i}]' for i in range(len(port['bits'])))
-        assert port['direction']==('input' if name in ('clk','reset_n','uart_rx') else 'output')
+        assert port['direction']==('input' if name in ('clk','reset_btn','uart_rx') else 'output')
     assert expanded==set(mapping),'XDC and synthesized wrapper ports differ'
     print('PASS: 8 XDC pins match synthesized top ports/directions and recorded Digilent mapping; 10 ns clock')
 
